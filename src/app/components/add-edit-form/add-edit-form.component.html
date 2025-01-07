@@ -1,0 +1,73 @@
+<form [formGroup]="personFrom">
+    <div class="flex flex-col gap-4">
+        <div class="grid grid-cols-3 gap-4">
+            <div class="flex flex-col gap-2">
+                <label for="firstName" class="font-semibold w-6rem">First Name <span
+                        class="text-red-500">*</span></label>
+                <input pInputText id="firstName" class="input" autocomplete="off" formControlName="firstName"
+                    [ngClass]="{'input-error': personFrom.get('firstName')?.hasError('required') && personFrom.get('firstName')?.touched}" />
+            </div>
+            <div class="flex flex-col gap-2">
+                <label for="middleName" class="font-semibold w-6rem">Middle Name</label>
+                <input pInputText id="middleName" class="input" autocomplete="off" formControlName="middleName" />
+            </div>
+            <div class="flex flex-col gap-2">
+                <label for="lastName" class="font-semibold w-6rem">Last Name <span class="text-red-500">*</span></label>
+                <input pInputText id="lastName" class="input" autocomplete="off" formControlName="lastName"
+                    [ngClass]="{'input-error': personFrom.get('lastName')?.hasError('required') && personFrom.get('lastName')?.touched}" />
+            </div>
+        </div>
+        <div class="flex flex-col gap-4">
+            <div class="grid grid-cols-3 gap-4">
+                <div class="flex flex-col gap-2">
+                    <label for="email" class="font-semibold w-6rem">Email <span class="text-red-500">*</span></label>
+                    <input pInputText id="email" type="email" class="input" autocomplete="off" formControlName="email"
+                        [ngClass]="{'input-error': personFrom.get('email')?.errors?.['required'] 
+                        && personFrom.get('email')?.touched || personFrom.get('email')?.errors?.['email']}" />
+                </div>
+                <div class="flex flex-col gap-2 justify-between">
+                    <label for="gender" class="font-semibold w-6rem">Gender <span class="text-red-500">*</span></label>
+                    <p-select formControlName="gender" [options]="genderOptions" optionLabel="label" optionValue="value"
+                        placeholder="Select gender" size="small"
+                        [ngClass]="{'input-error': personFrom.get('gender')?.hasError('required') && personFrom.get('gender')?.touched}" />
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label for="phone" class="font-semibold w-6rem">Phone Number</label>
+                    <input pInputText id="phone" class="input" autocomplete="off" formControlName="phone" />
+                </div>
+            </div>
+            <div class="grid grid-cols-3 gap-4">
+                <div class="flex flex-col gap-2">
+                    <label for="birthdate" class="font-semibold w-6rem">Birthdate</label>
+                    <p-datepicker class="mt-1" formControlName="birthdate" appendTo="body" showIcon="true"
+                        dateFormat="yy-mm-dd" />
+                </div>
+                <div class="flex flex-col gap-2 col-span-2">
+                    <label for="bio" class="font-semibold w-6rem">Bio</label>
+                    <textarea rows="5" cols="30" pTextarea formControlName="bio" class="input"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+            <div class="flex flex-col gap-2">
+                <label for="company" class="font-semibold w-6rem">Company</label>
+                <input pInputText id="company" class="input" autocomplete="off" formControlName="company" />
+            </div>
+            <div class="flex flex-col gap-2">
+                <label for="jobType" class="font-semibold w-6rem">Job</label>
+                <input pInputText id="jobType" class="input" autocomplete="off" formControlName="jobType" />
+            </div>
+            <div class="flex flex-col gap-2 justify-between">
+                <label for="status" class="font-semibold w-6rem">Status <span class="text-red-500">*</span></label>
+                <p-select formControlName="status" [options]="statusOptions" optionLabel="label" optionValue="value"
+                    placeholder="Select status" size="small"
+                    [ngClass]="{'input-error': personFrom.get('status')?.hasError('required') && personFrom.get('status')?.touched}" />
+            </div>
+        </div>
+        <p-divider />
+        <div class="flex gap-4 justify-end">
+            <p-button label="Cancel" severity="secondary" (onClick)="onClose()" />
+            <p-button label="Save" (onClick)="onSave()" />
+        </div>
+    </div>
+</form>
