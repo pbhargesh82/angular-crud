@@ -1,12 +1,13 @@
-import {Component, inject} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import {DarkModeService} from '@services/dark-mode.service';
-import {ButtonModule} from 'primeng/button';
-import {IconFieldModule} from 'primeng/iconfield';
-import {InputIconModule} from 'primeng/inputicon';
-import {InputTextModule} from 'primeng/inputtext';
-import {CommonModule} from '@angular/common';
+import { MessageService } from 'primeng/api';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { DarkModeService } from '@services/dark-mode.service';
+import { ButtonModule } from 'primeng/button';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -17,21 +18,25 @@ import {CommonModule} from '@angular/common';
 export class LoginComponent {
 
   private fb: FormBuilder = inject(FormBuilder);
+  private messageService: MessageService = inject(MessageService);
   loginForm: FormGroup;
   darkModeService: DarkModeService = inject(DarkModeService);
-  isRegister: boolean = true;
+  isRegister: boolean = false;
   registerFields: string[] = ['firstName', 'lastName', 'confirmPassword', 'receiveEmails'];
 
   constructor(
     private router: Router
   ) {
+    /* 
+      Disabled register form by for now, can be enabled in the future.
+    */
     this.loginForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
-      receiveEmails: [false],
+      // firstName: ['', Validators.required],
+      // lastName: ['', Validators.required],
+      email: ['test@123.com', [Validators.required, Validators.email]],
+      password: ['test@123.com', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
+      // confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
+      // receiveEmails: [false],
     });
   }
 
@@ -43,7 +48,7 @@ export class LoginComponent {
   }
 
   onCheckboxChange(event: any): void {
-    this.loginForm.patchValue({'receiveEmails': event.target.checked});
+    this.loginForm.patchValue({ 'receiveEmails': event.target.checked });
     console.log(this.loginForm.value);
   }
 
@@ -75,16 +80,30 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-    console.log('loginForm: ', this.loginForm.value);
+    const email = this.email?.value;
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (email && !emailPattern.test(email)) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please enter a valid email address.' });
+      return;
+    }
+
+    const password = this.password?.value;
+    if (password && password.length < 8) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Password must be at least 8 characters long.' });
+      return
+    }
+    if (password && password.length > 16) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Password must be at most 16 characters long.' });
+      return
+    }
+
     if (this.loginForm.valid) {
       console.log('Form Submitted:', this.loginForm.value);
       if (this.isRegister) {
         this.isRegister = false;
       } else {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard'], { queryParams: { showIntro: true } });
       }
-    } else {
-      console.log('Form is invalid');
     }
   }
 

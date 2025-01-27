@@ -20,5 +20,3 @@ export const generatePeopleData = (count: number): Person[] =>
             status: faker.helpers.arrayElement(['active', 'inactive', 'pending']),
         };
     });
-
-export const generatedData = generatePeopleData(100);

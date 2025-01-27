@@ -11,6 +11,7 @@ export const fieldLabelMap: { [key: string]: string } = {
     // company: 'Company',
     // jobType: 'Job Type',
     status: 'Status',
+    password: 'Password'
 };
 
 export const GenderOptions: Options[] = [

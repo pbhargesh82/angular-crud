@@ -14,9 +14,10 @@
 						<p-inputicon styleClass="pi pi-search" />
 					</p-iconfield>
 					<div class="flex gap-4 items-center">
-						<p-button icon="pi pi-external-link" label="Export" severity="warn"
-							(click)="dataTable.exportCSV()" />
+						<p-button icon="pi pi-refresh" label="Refresh Database" severity="warn"
+							(click)="refreshDatabase()" />
 						<p-button icon="pi pi-plus" label="Add User" (click)="toggleAddEditForm = true" />
+						<p-button icon="pi pi-sign-out" label="Logout" severity="danger" (click)="logout()" />
 					</div>
 				</div>
 			</ng-template>
@@ -85,5 +86,33 @@
 		(saveEventEmitter)="onSave($event)"> </app-add-edit-form>
 </p-drawer>
 }
+
+<p-dialog appendTo="body" header="Welcome to the CRUD Application" [modal]="true" [(visible)]="showIntro"
+	[style]="{ width: '70dvw' }" [draggable]="false" [resizable]="false" [showHeader]="false"
+	(onHide)="showIntro = false">
+	<div class="p-4">
+		<p class="text-justify mb-3">
+			This application is a part of my personal portfolio, built using <strong>Angular 19</strong>. It
+			demonstrates my skills in implementing Create, Read, Update, and Delete (CRUD) operations with modern web
+			technologies.
+		</p>
+		<p class="text-justify mb-3">
+			For storing and managing data, I’ve utilized <strong>IndexedDB</strong>, which allows efficient,
+			browser-based storage with offline capabilities. This eliminates the need for a backend server while
+			ensuring a seamless user experience.
+		</p>
+		<p class="text-justify mb-3">
+			I’ve designed the user interface using <strong>PrimeNG</strong>, a powerful UI library for Angular, to
+			create a responsive and visually appealing application. The rich set of components from PrimeNG enhances
+			usability and simplifies the development process.
+		</p>
+		<p class="text-justify">
+			This project is a testament to my expertise in building client-side applications and integrating Angular
+			with IndexedDB and PrimeNG. I hope you find this application intuitive and well-crafted as part of my
+			portfolio.
+		</p>
+	</div>
+</p-dialog>
+
 
 <p-confirmDialog />

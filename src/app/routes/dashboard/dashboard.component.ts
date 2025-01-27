@@ -4,7 +4,7 @@ import { FormGroup, FormsModule } from '@angular/forms';
 import { storeName } from '@config/db.config';
 import { Person } from '@config/model';
 import { peopleTableConfig } from '@config/table.config';
-import { generatedData } from '@db/db';
+import { generatePeopleData } from '@db/db';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -20,10 +20,12 @@ import { DividerModule } from 'primeng/divider';
 import { DrawerModule } from 'primeng/drawer';
 import { AddEditFormComponent } from "../../components/add-edit-form/add-edit-form.component";
 import { fieldLabelMap } from '@config/constants';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, TableModule, ButtonModule, TooltipModule, FormsModule, TagModule, ConfirmDialogModule, CapitalizePipe, IconFieldModule, InputIconModule, DividerModule, DrawerModule, AddEditFormComponent],
+  imports: [CommonModule, TableModule, ButtonModule, TooltipModule, FormsModule, TagModule, ConfirmDialogModule, CapitalizePipe, IconFieldModule, InputIconModule, DividerModule, DrawerModule, AddEditFormComponent, DialogModule],
   providers: [ConfirmationService],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
@@ -33,6 +35,8 @@ export class DashboardComponent {
   private dbService: NgxIndexedDBService = inject(NgxIndexedDBService);
   private messageService: MessageService = inject(MessageService);
   private confirmationService: ConfirmationService = inject(ConfirmationService);
+  private router: Router = inject(Router);
+  private route: ActivatedRoute = inject(ActivatedRoute);
   people: Person[] = [];
   tableConfig: any = peopleTableConfig;
   searchValue: string = '';
@@ -41,12 +45,27 @@ export class DashboardComponent {
   selectedPersons: Person[] = [];
   globalSearchFields?: string[];
   toggleAddEditForm: boolean = false;
+  showIntro: boolean = false;
 
   constructor() {
     this.globalSearchFields = peopleTableConfig.columns.filter(column => column.globalFilter !== false).map(column => column.field);
   }
 
   ngOnInit() {
+    this.route.queryParamMap.subscribe((queryParams) => {
+      const showIntro = queryParams.get('showIntro');
+      if (showIntro) {
+        this.showIntro = showIntro === 'true';
+      }
+
+      // Remove the query parameter if it exists
+      if (showIntro) {
+        this.router.navigate([], {
+          queryParams: { showIntro: null }, // Set to null to remove it
+          queryParamsHandling: 'merge', // Keep other existing query params
+        });
+      }
+    });
     this.initializeDatabase();
   }
 
@@ -57,7 +76,7 @@ export class DashboardComponent {
         this.getUsers();
       } else {
         console.log('Initializing database with sample data...');
-        this.dbService.bulkAdd(storeName, generatedData).subscribe({
+        this.dbService.bulkAdd(storeName, generatePeopleData(100)).subscribe({
           next: () => {
             console.log('Sample data added to database.');
             this.getUsers();
@@ -189,5 +208,18 @@ export class DashboardComponent {
     }
   }
 
+  refreshDatabase() {
+    this.dbService.clear(storeName).subscribe((successDeleted) => {
+      console.log('success? ', successDeleted);
+      if (successDeleted) {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Database cleared successfully.' });
+        this.initializeDatabase();
+      }
+    });
+  }
+
+  logout() {
+    this.router.navigate(['/login']);
+  }
 
 }

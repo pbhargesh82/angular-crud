@@ -32,7 +32,7 @@ export class AddEditFormComponent {
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       gender: ['', Validators.required],
-      phone: [''],
+      phone: ['', [Validators.pattern(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/)]],
       birthdate: [''],
       bio: [''],
       company: [''],
