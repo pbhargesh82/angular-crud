@@ -1,6 +1,6 @@
 <form [formGroup]="personFrom">
     <div class="flex flex-col gap-4">
-        <div class="grid grid-cols-3 gap-4">
+        <div class="grid sm:grid-flow-col md:grid-cols-3 gap-4">
             <div class="flex flex-col gap-2">
                 <label for="firstName" class="font-semibold w-6rem">First Name <span
                         class="text-red-500">*</span></label>
@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="flex flex-col gap-4">
-            <div class="grid grid-cols-3 gap-4">
+            <div class="grid sm:grid-flow-col md:grid-cols-3 gap-4">
                 <div class="flex flex-col gap-2">
                     <label for="email" class="font-semibold w-6rem">Email <span class="text-red-500">*</span></label>
                     <input pInputText id="email" type="email" class="input" autocomplete="off" formControlName="email"
@@ -36,7 +36,7 @@
                     <input pInputText id="phone" class="input" autocomplete="off" formControlName="phone" />
                 </div>
             </div>
-            <div class="grid grid-cols-3 gap-4">
+            <div class="grid sm:grid-flow-col md:grid-cols-3 gap-4">
                 <div class="flex flex-col gap-2">
                     <label for="birthdate" class="font-semibold w-6rem">Birthdate</label>
                     <p-datepicker class="mt-1" formControlName="birthdate" appendTo="body" showIcon="true"
@@ -48,7 +48,7 @@
                 </div>
             </div>
         </div>
-        <div class="grid grid-cols-3 gap-4">
+        <div class="grid sm:grid-flow-col md:grid-cols-3 gap-4">
             <div class="flex flex-col gap-2">
                 <label for="company" class="font-semibold w-6rem">Company</label>
                 <input pInputText id="company" class="input" autocomplete="off" formControlName="company" />

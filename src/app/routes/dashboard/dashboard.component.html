@@ -7,13 +7,13 @@
 			[rows]="20" [rowsPerPageOptions]="[20, 50, 100]" [showCurrentPageReport]="true"
 			currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
 			<ng-template #caption>
-				<div class="flex items-center justify-between">
-					<p-iconfield class="w-80">
+				<div class="flex gap-2 flex-wrap md:flex-nowrap items-center justify-between">
+					<p-iconfield class="w-60 md:w-80">
 						<input class="input" type="text" pInputText placeholder="Search (Name, Email)"
 							[(ngModel)]="searchValue" (input)="onGlobalFilter(dataTable, $event)" />
 						<p-inputicon styleClass="pi pi-search" />
 					</p-iconfield>
-					<div class="flex gap-4 items-center">
+					<div class="flex gap-2 md:gap-4 flex-wrap md:flex-nowrap items-center justify-end md:justify-start">
 						<p-button icon="pi pi-refresh" label="Refresh Database" severity="warn"
 							(click)="refreshDatabase()" />
 						<p-button icon="pi pi-plus" label="Add User" (click)="toggleAddEditForm = true" />
@@ -40,7 +40,7 @@
 				</tr>
 			</ng-template>
 			<ng-template #body let-person let-rowIndex="rowIndex">
-				<tr [pSelectableRow]="person" [pSelectableRowIndex]="rowIndex" (dblclick)="onRowDblClick(person)	">
+				<tr [pSelectableRow]="person" [pSelectableRowIndex]="rowIndex" (dblclick)="onRowDblClick(person)">
 					<td> <p-tableCheckbox [value]="person" /> </td>
 					@for (item of tableConfig.columns; track $index) {
 					@if (item.field === "action") {
